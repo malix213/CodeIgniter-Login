@@ -12,6 +12,11 @@ class Main extends CI_Controller {
 		$this->load->view('login');
 	}
 
+	public function signup()
+	{
+		$this->load->view('signup');
+	}
+
 	public function members()
 	{
 		if ($this->session->userdata('is_logged_in')){
@@ -42,6 +47,63 @@ class Main extends CI_Controller {
 		} else {
 			$this->load->view('login');
 		}
+	}
+
+	public function signup_validation()
+	{
+		$this->load->library('form_validation');
+
+		$this->form_validation->set_rules('email','Email','required|trim|valid_email|is_unique[users.email]');
+		$this->form_validation->set_rules('password','Password','required|trim');
+		$this->form_validation->set_rules('cpassword','Confirm Password','required|trim|matches[password]');
+
+		$this->form_validation->set_message('is_unique','That email address already exists.');
+		if($this->form_validation->run()){
+			
+			// generate random key
+			$key = md5(uniqid());
+
+			// create email 
+			$this->load->library('email');
+
+			$config['protocol']    = 'smtp';
+            $config['smtp_host']    = 'ssl://smtp.gmail.com';
+            $config['smtp_port']    = '465';
+            $config['smtp_timeout'] = '7';
+            $config['smtp_user']    = 'abdelmalek.lahmar@gmail.com';
+            $config['smtp_pass']    = 'B@rcelone1';
+            $config['charset']    = 'utf-8';
+            $config['newline']    = "\r\n";
+            $config['mailtype'] = 'html'; // or html
+            $config['validation'] = TRUE; // bool whether to validate email or not  
+			$this->email->initialize($config);
+
+			$this->load->model('model_users');
+
+			
+			$this->email->from('abdelmalek.lahmar@gmail.com', 'Abdelamlek');
+			$this->email->to($this->input->post('email'));
+			$this->email->subject('Confirm your account.');
+
+			$message = "<p>Thank you for signing up!";
+			$message .= "<p><a href='".base_url()."main/register_user/$key' >Click here</a> to confirm your account</p>";
+
+			$this->email->message($message);
+
+			// send and email to the user
+			if ($this->model_users->add_temp_user($key)){
+				if($this->email->send()){
+					echo "The email has been send!";
+				} else echo "could not send the email.";
+			} else echo "Problem adding to the database.";
+
+			// add them the temp_users db
+
+		} else {
+			$this->load->view('signup');
+		}
+
+
 	}
 
 	public function validate_credentials()
