@@ -34,4 +34,39 @@ class Model_users extends CI_Model
 		}
 
 	}
+
+	public function is_key_valid($key)
+	{
+		$this->db->where('key',$key);
+		$query = $this->db->get('temp_users');
+		if ($query->num_rows() == 1) {
+			return true;
+		} else return false;
+
+	}
+
+	public function add_user($key)
+	{
+		$this->db->where('key',$key);
+		$temp_user = $this->db->get('temp_users');
+		
+		if ($temp_user) {
+			$row = $temp_user->row();
+			$data = array(
+				'email' => $row->email,
+				'password' => $row->password
+
+			);
+			$did_add_user = $this->db->insert('users',$data);
+		} 
+
+		if($did_add_user){
+			$this->db->where('key',$key);
+			$this->db->delete('temp_users');
+			return true;
+		} else return false;
+
+
+
+	}
 }

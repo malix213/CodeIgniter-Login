@@ -123,4 +123,15 @@ class Main extends CI_Controller {
 		$this->session->sess_destroy();
 		redirect('main/login');
 	}
+
+	public function register_user($key)
+	{
+		$this->load->model('model_users');
+		if($this->model_users->is_key_valid($key)){
+			if($this->model_users->add_user($key)){
+				echo "success";
+			} else echo "Failed to add user, please try again";
+		} else echo "invalid key";
+
+	}
 }
