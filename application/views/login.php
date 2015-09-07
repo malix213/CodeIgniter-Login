@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		echo validation_errors();
 
 		echo "<p>Email:" ;
-		echo form_input('email');
+		echo form_input('email',$this->input->post('email'));
 		echo "</p>";
 
 		echo "<p>password" ;
@@ -29,6 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		echo form_close();
 	?>
+	<a href='<?php echo base_url()."main/signup";?>'>Sign up!</a>
 </div>
 
 </body>
