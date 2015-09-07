@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:8889
--- Généré le :  Dim 06 Septembre 2015 à 21:44
+-- Généré le :  Lun 07 Septembre 2015 à 22:54
 -- Version du serveur :  5.5.42
 -- Version de PHP :  5.6.10
 
@@ -23,12 +23,13 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `temp_uesrs`
+-- Structure de la table `temp_users`
 --
 
-CREATE TABLE `temp_uesrs` (
+CREATE TABLE `temp_users` (
   `id` int(11) NOT NULL,
   `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `key` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -49,9 +50,9 @@ CREATE TABLE `users` (
 --
 
 --
--- Index pour la table `temp_uesrs`
+-- Index pour la table `temp_users`
 --
-ALTER TABLE `temp_uesrs`
+ALTER TABLE `temp_users`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -65,9 +66,9 @@ ALTER TABLE `users`
 --
 
 --
--- AUTO_INCREMENT pour la table `temp_uesrs`
+-- AUTO_INCREMENT pour la table `temp_users`
 --
-ALTER TABLE `temp_uesrs`
+ALTER TABLE `temp_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT pour la table `users`
