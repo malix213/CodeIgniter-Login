@@ -127,11 +127,19 @@ class Main extends CI_Controller {
 	public function register_user($key)
 	{
 		$this->load->model('model_users');
-		if($this->model_users->is_key_valid($key)){
+		if($newemail = $this->model_users->is_key_valid($key)){
 			if($this->model_users->add_user($key)){
-				echo "success";
+				$data = array(
+					'email' => $newemail  ,
+					'is_logged_in' => 1 
+				);	
+				$this->session->set_userdata($data);
+				redirect('main/members');
+
 			} else echo "Failed to add user, please try again";
 		} else echo "invalid key";
 
 	}
+
+
 }
